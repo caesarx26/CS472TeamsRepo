@@ -2,9 +2,9 @@ name: CI workflow
 
 on: 
   push:
-    branches: ["main", "testWorkflow"]
+    branches: ["main", "make-ci-better-yah"]
   pull_request:
-    branches: ["main", "testWorkflow"]
+    branches: ["main", "make-ci-better-yah"]
 
 defaults:
   run:
