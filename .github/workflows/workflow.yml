@@ -51,9 +51,9 @@ jobs:
       - name: Run unit tests with pytest
         run: pytest -v --tb=short --color=yes --cov=src --cov-report=term-missing
 
-  test_python_3_8:  # New job for Python 3.8
+  test_python_3_13:  # Job for Python 3.13.0-rc.3
     runs-on: ubuntu-latest
-    container: python:3.8-slim
+    container: python:3.13.0-rc.3
 
     steps:
       - name: Checkout
@@ -62,7 +62,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.13.0-rc.3
 
       - name: Install dependencies
         run: |
@@ -71,25 +71,24 @@ jobs:
 
       - name: Run unit tests with pytest
         run: pytest -v --tb=short --color=yes --cov=src --cov-report=term-missing
-  test_python_3_10:  # Job for Python 3.10
+
+  test_python_3_14:  # Job for Python 3.14.0-alpha.0
     runs-on: ubuntu-latest
-    container: python:3.10-slim
+    container: python:3.14.0-alpha.0
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v2  # Use v2 for more stable compatibility
-      with:
-        python-version: 3.10
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.14.0-alpha.0
 
-    - name: Install dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run unit tests with pytest
-      run: pytest -v --tb=short --color=yes --cov=src --cov-report=term-missing
-
-
+      - name: Run unit tests with pytest
+        run: pytest -v --tb=short --color=yes --cov=src --cov-report=term-missing
