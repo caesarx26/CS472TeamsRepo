@@ -1,9 +1,10 @@
 name: CI workflow
+
 on: 
   push:
-    branches: ["main", "testWorkflow"]
+    branches: ["main", "make-ci-better-yah"]
   pull_request:
-    branches: ["main", "testWorkflow"]
+    branches: ["main", "make-ci-better-yah"]
 
 defaults:
   run:
@@ -38,6 +39,56 @@ jobs:
 
       - name: Lint with flake8
         run: flake8 src --count --max-complexity=10 --max-line-length=127 --statistics
+
+      # Adding security analysis with Bandit
+      - name: Security analysis with Bandit
+        run: |
+          pip install bandit
+          bandit -r src -f json -o bandit-report.json
+          cat bandit-report.json
+
+      # Run unit tests with pytest
+      - name: Run unit tests with pytest
+        run: pytest -v --tb=short --color=yes --cov=src --cov-report=term-missing
+
+  test_python_3_7:  # Job for Python 3.7
+    runs-on: ubuntu-latest
+    container: python:3.7-slim
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run unit tests with pytest
+        run: pytest -v --tb=short --color=yes --cov=src --cov-report=term-missing
+
+  test_python_3_8:  # Job for Python 3.8
+    runs-on: ubuntu-latest
+    container: python:3.8-slim
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run unit tests with pytest
         run: pytest -v --tb=short --color=yes --cov=src --cov-report=term-missing
